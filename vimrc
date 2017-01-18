@@ -286,7 +286,7 @@ noremap <silent> <C-w> :<C-u>call CloseWindow()<CR>|inoremap <silent> <C-w> <C-o
 noremap <silent> <C-t> :<C-u>tabnew<CR>|
 "noremap <silent> <C-n> :<C-u>tabnew<CR>|
 function! CloseWindow()
-    if winheight(2) < 0 | confirm quit | else | confirm close | endif
+	if winheight(2) < 0 | confirm quit | else | confirm close | endif
 endfunction
 "nnoremap <silent> <C-s> :<C-u>update<CR>|inoremap <C-s> <C-o>:<C-u>update<CR>|
 
@@ -371,3 +371,17 @@ inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 "set completeopt=longest,menuone
 "inoremap <expr> <C-n> pumvisible() ? "\<lt>C-n>" : "\<lt>C-n>\<lt>C-r>=pumvisible() ? \"\\<lt>Down>\" : \"\"\<lt>CR>"
 "inoremap <expr> <M-;> pumvisible() ? "\<lt>C-n>" : "\<lt>C-x>\<lt>C-o>\<lt>C-n>\<lt>C-p>\<lt>C-r>=pumvisible() ? \"\\<lt>Down>\" : \"\"\<lt>CR>"
+
+"Put plugins and dictionaries in this dir (also on Windows)
+let vimDir = '$HOME/.vim'
+let &runtimepath.=','.vimDir
+
+" Keep undo history across sessions by storing it in a file
+if has('persistent_undo')
+	let myUndoDir = expand(vimDir . '/undodir')
+	" Create dirs
+	call system('mkdir ' . vimDir)
+	call system('mkdir ' . myUndoDir)
+	let &undodir = myUndoDir
+	set undofile
+endif
